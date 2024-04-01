@@ -1,14 +1,17 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import unquote_plus
-import urllib.parse
 from datetime import datetime
-from pathlib import Path
-import mimetypes
-import json
-import socket
 from threading import Timer
-
-
+from pathlib import Path
+import urllib.parse
+import mimetypes
+import socket
+import json
+import os 
+  
+directory = "storage"
+parent_dir = "."
+path = os.path.join(parent_dir, directory) 
 UDP_IP = '127.0.0.1'
 UDP_PORT = 5000
 
@@ -58,7 +61,7 @@ class HttpHandler(BaseHTTPRequestHandler):
         print(data)
         dict_data = {key: value for key, value in [el.split("=") for el in data.split("&")]}
         print(dict_data)
-        with open("data/data.json", "a", encoding="utf-8") as f:
+        with open("storage/data.json", "a", encoding="utf-8") as f:
             json.dump({str(datetime.now()): dict_data}, f, indent = 6)
 
 def run(server_class=HTTPServer, handler_class=HttpHandler):
@@ -97,10 +100,22 @@ def run_server(ip, port):
     finally:
         sock.close()
 
+def check_it():
+    if not os.path.exists(path):
+        try:  
+            os.mkdir(path)  
+            print("Directory '% s' created" % directory) 
+        except OSError as error:  
+            print(error)
+    else:
+        print("Directory '% s' is exist!" % directory)
+
 
 if __name__ == '__main__':
     # run()
     # run_server(UDP_IP, UDP_PORT)
+    check_it()
+
     one = Timer(0.1, run)
     one.name = 'First thread'
     one.start()
