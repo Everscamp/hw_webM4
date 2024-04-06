@@ -7,7 +7,8 @@ import urllib.parse
 import mimetypes
 import socket
 import json
-import os 
+import os
+
   
 directory = "storage"
 parent_dir = "."
@@ -112,8 +113,7 @@ def check_it():
 
 
 if __name__ == '__main__':
-    # run()
-    # run_server(UDP_IP, UDP_PORT)
+    # Check and create the storage folder if it's no created
     check_it()
 
     one = Timer(0.1, run)
@@ -121,4 +121,6 @@ if __name__ == '__main__':
     one.start()
     two = Timer(0.5, run_server, args=(UDP_IP, UDP_PORT,))
     two.name = 'Second thread'
+    print("Starting the Second thread!")
     two.start()
+    print("Second thread!")
